@@ -1,0 +1,40 @@
+server:
+  port: 9101
+spring:
+  datasource:
+    username: "sgryu01"
+    userpassword: "Qwer1324!@"
+    url: "jdbc:mysql://10.47.4.10:43306/qrbgw?autoReconnect=true&useUnicode=true&characterEncoding=UTF-8&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC&tinyInt1isBit=false"
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+  cloud:
+    vault:
+      ssl:
+        enabled: false
+      authentication: token
+      host: "vault.dev.local"
+      port: 443
+      token: "hvs.jazUDRv6c8aEVbbWL1TkBPHg"
+# Springdoc 설정 (Swagger 관련 설정)
+springdoc:
+  swagger-ui:
+    groups-order: DESC               # 그룹 순서: 내림차순
+    tags-sorter: alpha               # 태그 정렬 방식: 알파벳순
+    operations-sorter: method        # 운영 정렬 방식: 메소드 기준
+    disable-swagger-default-url: true # Swagger 기본 URL 비활성화
+    display-request-duration: true   # 요청 지속시간 표시
+    defaultModelsExpandDepth: 2      # 기본 모델 펼침 깊이
+    defaultModelExpandDepth: 2       # 기본 모델 펼침 깊이
+  api-docs:
+    path: /api-docs                  # API 문서 경로
+  show-actuator: true                 # Actuator(헬스 체크 등) 표시
+  default-consumes-media-type: application/json  # 기본 요청 미디어 타입
+  default-produces-media-type: application/json  # 기본 응답 미디어 타입
+  writer-with-default-pretty-printer: true  # 예쁘게 출력 (pretty print)
+  model-and-view-allowed: true       # 모델과 뷰 지원
+  paths-to-match:
+    - /test/**                     # Swagger 문서에 포함할 API 경로

@@ -1,0 +1,13 @@
+spring:
+  datasource:
+    url: "jdbc:mysql://10.100.3.12:3306/qrbgw?autoReconnect=true&useUnicode=true&characterEncoding=UTF-8&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC&tinyInt1isBit=false"
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+  profile:
+    include:
+      - unionpay
+      - gateway

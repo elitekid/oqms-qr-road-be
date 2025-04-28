@@ -1,0 +1,8 @@
+rootProject.name = 'oqms-qr-road-be'
+include 'module-unionpay'
+include 'module-infra-rdb'
+include 'module-core'
+include 'module-domain'
+include 'module-payment-gateway'
+include 'module-infra-vault'
+
