@@ -42,4 +42,4 @@ bin/
 .DS_Store
 
 # Ignore local Spring Boot profile configuration
-src/main/resources/application-local.yaml
+module-unionpay/src/main/resources/application-local.yaml
