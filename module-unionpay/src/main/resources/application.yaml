@@ -1,24 +1,9 @@
 server:
   port: 9101
 spring:
-  datasource:
-    username: "sgryu01"
-    userpassword: "Qwer1324!@"
-    url: "jdbc:mysql://10.47.4.10:43306/qrbgw?autoReconnect=true&useUnicode=true&characterEncoding=UTF-8&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC&tinyInt1isBit=false"
   jpa:
     hibernate:
       ddl-auto: update
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.MySQL8Dialect
-  cloud:
-    vault:
-      ssl:
-        enabled: false
-      authentication: token
-      host: "vault.dev.local"
-      port: 443
-      token: "hvs.jazUDRv6c8aEVbbWL1TkBPHg"
 # Springdoc 설정 (Swagger 관련 설정)
 springdoc:
   swagger-ui:
