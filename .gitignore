@@ -40,3 +40,6 @@ bin/
 
 ### Mac OS ###
 .DS_Store
+
+# Ignore local Spring Boot profile configuration
+src/main/resources/application-local.yaml
