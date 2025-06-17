@@ -43,3 +43,7 @@ bin/
 
 # Ignore local Spring Boot profile configuration
 module-unionpay/src/main/resources/application-local.yaml
+module-payment-gateway/src/main/resources/application-local.yaml
+
+### Log ###
+*.log

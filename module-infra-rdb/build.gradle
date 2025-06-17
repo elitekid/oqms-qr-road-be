@@ -3,7 +3,7 @@ plugins {
 }
 
 group = 'com.qrroad.oqms'
-version = '0.0.1-SNAPSHOT'
+version = '0.0.2-SNAPSHOT'
 
 bootJar {
     enabled = false
@@ -11,10 +11,6 @@ bootJar {
 
 jar {
     enabled = true
-}
-
-repositories {
-    mavenCentral()
 }
 
 def querydslDir = '$buildDir/generated/querydsl'
@@ -26,6 +22,8 @@ clean {
 dependencies {
     implementation project(':module-domain')
     implementation project(':module-infra-vault')
+
+    implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.9.2'
 
     testImplementation platform('org.junit:junit-bom:5.10.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'

@@ -1,5 +1,7 @@
 package com.qrroad.oqms.unionpay.dto;
 
+import com.qrroad.oqms.unionpay.util.ToStringUtil;
+
 import lombok.Builder;
 import lombok.Getter;
 
@@ -57,5 +59,15 @@ public class ApiMsgDto {
         private String terminalID;
         private String qrCodeType;
         private String subMerchantName;
+
+        @Override
+        public String toString() {
+            return ToStringUtil.toPrettyString(this);
+        }
+    }
+
+    @Override
+    public String toString() {
+        return ToStringUtil.toPrettyString(this);
     }
 }

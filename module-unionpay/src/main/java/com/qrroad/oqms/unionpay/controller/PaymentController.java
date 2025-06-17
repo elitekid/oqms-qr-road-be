@@ -6,6 +6,8 @@ import com.qrroad.oqms.unionpay.util.CommonUtil;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
+import org.apache.coyote.BadRequestException;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -113,6 +115,11 @@ public class PaymentController {
         if(isEmvPayload) {
             Map<String, String> tlvMap = CommonUtil.parseTLV(mpqrcPayload);
             if(tlvMap.get("15").isEmpty()) {
+                // 52 필드가 6011인 경우 잘못된 요청 에러 처리
+                if("6011".equals(tlvMap.get("52"))) {
+                    throw new BadRequestException("잘못된 요청입니다. (Invalid QR Code)");
+                }
+                
                 return mpmEmvService.processMpqrcPaymentEmv(dto);
             }
             return mpmBackService.processQrcInfoInquiry(dto);

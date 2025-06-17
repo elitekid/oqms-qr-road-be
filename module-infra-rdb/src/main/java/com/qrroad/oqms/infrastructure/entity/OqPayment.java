@@ -205,6 +205,9 @@ public class OqPayment {
     @Column(name = "pay_order_info", length = 2048)
     private String payOrderInfo;
 
+    @Column(name = "msg_id", length = 50)
+    private String msgId;
+
     @Column(name = "response_code", length = 2)
     private String responseCode;
 

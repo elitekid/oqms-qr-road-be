@@ -1,7 +1,12 @@
 package com.qrroad.oqms.infrastructure.config;
 
+import com.p6spy.engine.spy.P6SpyOptions;
+import com.qrroad.oqms.infrastructure.decorator.P6SpyFormatter;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+
+import jakarta.annotation.PostConstruct;
 import jakarta.persistence.EntityManager;
+
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -23,5 +28,10 @@ public class DBConfig {
     @Bean
     public JPAQueryFactory jpaQueryFactory() {
         return new JPAQueryFactory(entityManager);
+    }
+
+    @PostConstruct
+    public void setLogMessageFormat() {
+        P6SpyOptions.getActiveInstance().setLogMessageFormat(P6SpyFormatter.class.getName());
     }
 }

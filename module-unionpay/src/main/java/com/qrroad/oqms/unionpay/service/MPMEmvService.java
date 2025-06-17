@@ -1,11 +1,13 @@
 package com.qrroad.oqms.unionpay.service;
 
+import com.qrroad.oqms.domain.dto.OqPaymentDto;
 import com.qrroad.oqms.domain.repository.OqUpiTokenRepository;
 import com.qrroad.oqms.unionpay.dto.*;
 import com.qrroad.oqms.unionpay.dto.upitrxinfo.MpmTrxInfo;
 import com.qrroad.oqms.unionpay.enums.ApiSource;
 import com.qrroad.oqms.unionpay.enums.MessageId;
 import com.qrroad.oqms.unionpay.enums.MessageType;
+import com.qrroad.oqms.unionpay.enums.TransactionType;
 import com.qrroad.oqms.unionpay.keymanagement.UmpsCertificateKeyManager;
 import com.qrroad.oqms.unionpay.util.CommonUtil;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestClient;
 
+import java.util.Collections;
 import java.util.Map;
 import java.util.Objects;
 
@@ -24,8 +27,8 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class MPMEmvService {
 
-    private final QrPayService qrPayService;
-    private final OqUpiTokenRepository oqUpiTokenRepository ;
+    private final OqPaymentService oqPaymentService;
+    private final OqUpiTokenRepository oqUpiTokenRepository;
     private final UmpsCertificateKeyManager umpsCertificateKeyManager;
 
     /**
@@ -40,7 +43,7 @@ public class MPMEmvService {
         UpiMsgDto<MpmTrxInfo> upiDto = generateMpqrcPaymentEmvRequestUpiDto(apiMsgDto);
 
         // 1. QR 결제내역 생성
-//        qrPayService.createQrPayData(upiRequestDto, requestBankDto.getPayInfo());
+        oqPaymentService.savePaymentData(upiDto, apiMsgDto, TransactionType.MPM_EMV);
 
         // 2. To-Be-Signed String 변환 (서명할 값)
         String jsonBody = CommonUtil.convertToJsonWithoutNullsAndEmptyStrings(upiDto);
@@ -67,7 +70,7 @@ public class MPMEmvService {
         CommonUtil.verifyUmps(upiResponseDto, umpsCertificateKeyManager.getUmpsKeys().getUmpsSignPublicKey());
 
         // 6. 결제내역 업데이트
-//        qrPayService.updateQrPayData(upiResponseDto);
+        oqPaymentService.updatePaymentData(upiResponseDto);
 
         // 7. 은행 응답 DTO 생성 및 반환
         return generateMpqrcPaymentEmvRequestBankDto(upiResponseDto);
@@ -98,7 +101,7 @@ public class MPMEmvService {
             trxFeeAmt = payloadMap.get("56");
         }
 
-        Map<String, String> additionalDataMap = qrPayService.getAdditionalDataInPayload(apiDto.getTrxInfo().getMpqrcPayload());
+        Map<String, String> additionalDataMap = getAdditionalDataInPayload(apiDto.getTrxInfo().getMpqrcPayload());
         MpmTrxInfo.AdditionalData additionalData = MpmTrxInfo.AdditionalData.builder()
                 .billNo(additionalDataMap.get("01"))
                 .mobileNo(additionalDataMap.get("02"))
@@ -182,5 +185,35 @@ public class MPMEmvService {
                 .trxInfo(trxInfo)
                 .msgResponse(upiDto.getMsgResponse())
                 .build();
+    }
+
+    /**
+     * 4. OqPayment Dto 생성
+     *
+     */
+    public OqPaymentDto generateOqPaymentDto(UpiMsgDto<MpmTrxInfo> upiDto, ApiMsgDto apiMsgDto) {
+        return OqPaymentDto.builder()
+                .trxDt(upiDto.getMsgInfo().getTimeStamp().substring(0,8))
+                .trxTm(upiDto.getMsgInfo().getTimeStamp().substring(8))
+                .txnId(upiDto.getTrxInfo().getTxnID())
+                .instCd(apiMsgDto.getPayInfo().getInstCd())
+                .trxIn(TransactionType.MPM_EMV.getCode())
+                .qrPayload(upiDto.getTrxInfo().getMpqrcPayload())
+                .msgId(upiDto.getMsgInfo().getMsgID())
+                .build();
+    }
+
+    /**
+     * 페이로드에서 추가 데이터를 가져옵니다.
+     * @param payload 페이로드 문자열
+     * @return 추가 데이터가 포함된 맵
+     */
+    public Map<String, String> getAdditionalDataInPayload(String payload) {
+        Map<String, String> payloadMap = CommonUtil.parseTLV(payload);
+        if (payloadMap.containsKey("62")) {
+            return CommonUtil.parseTLV(payloadMap.get("62"));
+        } else {
+            return Collections.emptyMap();
+        }
     }
 }
