@@ -1,12 +1,12 @@
 package com.qrroad.oqms.unionpay.dto;
 
+import com.qrroad.oqms.unionpay.util.ToStringUtil;
+
 import lombok.Builder;
 import lombok.Getter;
-import lombok.ToString;
 
 @Getter
 @Builder(toBuilder = true)
-@ToString
 public class RiskInfo {
     private String gps;
     private String[] simCard;
@@ -17,4 +17,9 @@ public class RiskInfo {
     private String reservedMobileNo;
     private String deviceType;
     private String deviceScore;
+
+    @Override
+    public String toString() {
+        return ToStringUtil.toPrettyString(this);
+    }
 }

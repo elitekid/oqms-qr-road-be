@@ -3,11 +3,7 @@ plugins {
 }
 
 group = 'com.qrroad.oqms'
-version = '0.0.1-SNAPSHOT'
-
-repositories {
-    mavenCentral()
-}
+version = '0.0.2-SNAPSHOT'
 
 bootJar {
     enabled = true
@@ -26,6 +22,8 @@ dependencies {
 
     testImplementation platform('org.junit:junit-bom:5.10.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2'
 
     implementation 'org.springframework:spring-tx'

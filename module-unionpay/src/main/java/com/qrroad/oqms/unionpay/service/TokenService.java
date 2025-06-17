@@ -245,7 +245,7 @@ public class TokenService {
             String expiryDate = expirySetting.format(DateTimeFormatter.ofPattern("MM/yy"));
 
             RiskInfo riskInfo = RiskInfo.builder()
-                .appUserID(apiMsgDto.getTrxInfo().getAppUserID())
+                .reservedMobileNo("82-1000000000")
                 .build();
 
             TokenTrxInfo trxInfo = TokenTrxInfo.builder()
@@ -256,6 +256,7 @@ public class TokenService {
                 ))
                 .useCaseIndicator(new String[]{"QRC"})
                 .expiryDate(expiryDate)
+                .cvm(new String[]{"expireDate"})
                 .riskInfo(riskInfo)
                 .build();
 
@@ -273,7 +274,7 @@ public class TokenService {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        }
+    }
 
     /**
      * 토큰 업데이트(TOKEN_STATE_UPDATE) - 데이터 가공
