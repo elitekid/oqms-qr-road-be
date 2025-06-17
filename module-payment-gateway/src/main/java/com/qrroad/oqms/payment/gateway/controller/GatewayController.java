@@ -1,5 +1,8 @@
 package com.qrroad.oqms.payment.gateway.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.qrroad.oqms.payment.gateway.factory.PaymentServiceFactory;
 import com.qrroad.oqms.payment.gateway.service.PaymentGatewayService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -14,9 +17,9 @@ import java.util.Map;
 
 @RestController
 @Slf4j
-@RequestMapping("/payment")
 @RequiredArgsConstructor
 public class GatewayController {
+    private final ObjectMapper objectMapper;
     private final RestTemplate restTemplate;
     private final PaymentGatewayService gatewayService;
     private final PaymentServiceFactory paymentServiceFactory;
@@ -28,7 +31,7 @@ public class GatewayController {
      * @param requestBody 요청데이터
      * @return 응답 데이터
      */
-    @PostMapping(value = "/request",
+    @PostMapping(value = "/payment/request",
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> requestFromBankTokenRequest(HttpServletRequest request, @RequestBody Map<String, Object> requestBody) {
@@ -43,22 +46,32 @@ public class GatewayController {
      *
      * @param request 요청
      * @param requestBody 요청데이터
+     *
      * @return 응답 데이터
      */
-    @PostMapping(value = "/update",
+    @PostMapping(value = "/payment/check",
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> requestFromBankTokenStateUpdate(HttpServletRequest request, @RequestBody Object requestBody) {
         return gatewayService.processCheckPayment(request, requestBody);
     }
 
-    @RequestMapping(value = "/{provider}/**", method = RequestMethod.POST)
-    public ResponseEntity<String> routePayment(@PathVariable String provider, HttpServletRequest request, @RequestBody String paymentDetails) {
+    @RequestMapping(value = "/**", method = RequestMethod.POST)
+    public ResponseEntity<String> routePayment(HttpServletRequest request, @RequestBody String paymentDetails) throws JsonProcessingException {
+        // 특정 URL 예외 처리 (/token으로 시작하면 요청을 무시하거나 다른 로직 적용)
+        if (request.getRequestURI().startsWith("/token")) {
+            return ResponseEntity.notFound().build(); // 404 응답 반환 (다른 컨트롤러에서 처리됨)
+        }
+
+        // JSON 문자열에서 instCd 추출
+        JsonNode root = objectMapper.readTree(paymentDetails);
+        String instCd = root.path("payInfo").path("instCd").asText();
+
         // 각 provider에 맞는 서비스 URL을 동적으로 가져오는 메서드
-        String serviceUrl = getServiceUrlForProvider(provider);
+        String serviceUrl = getServiceUrlForProvider(instCd, request.getRequestURI());
 
         // 요청된 URI에서 '/payment/{provider}' 부분을 제외한 나머지 부분을 가져와서 전달
-        String targetUrl = serviceUrl + request.getRequestURI().substring(("/payment/" + provider).length());
+        String targetUrl = serviceUrl + request.getRequestURI();
 
         // 원본 요청의 헤더를 복사하여 전달
         HttpHeaders headers = new HttpHeaders();
@@ -78,11 +91,12 @@ public class GatewayController {
         return restTemplate.postForEntity(targetUrl, httpEntity, String.class);
     }
 
-    private String getServiceUrlForProvider(String provider) {
-        return switch (provider.toLowerCase()) {
-            case "unionpay" -> "http://localhost:9101"; // UnionPay 서비스
-            // 추가적인 페이사 서비스 추가 가능
-            default -> throw new IllegalArgumentException("Invalid provider: " + provider);
-        };
+    private String getServiceUrlForProvider(String instCd, String requestUri) {
+        if (instCd.equalsIgnoreCase("020") || requestUri.startsWith("/umps/")) {
+            return "http://localhost:9101"; // UnionPay 서비스
+        } else if(instCd.equalsIgnoreCase("081")) {
+
+        }
+        throw new IllegalArgumentException("Invalid instCd or unsupported requestUri: " + instCd);
     }
 }

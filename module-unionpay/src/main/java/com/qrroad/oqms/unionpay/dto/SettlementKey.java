@@ -1,11 +1,11 @@
 package com.qrroad.oqms.unionpay.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.qrroad.oqms.unionpay.util.ToStringUtil;
+
 import lombok.Builder;
-import lombok.ToString;
 
 @Builder(toBuilder = true)
-@ToString
 public class SettlementKey {
 
     private String acquirerIIN;
@@ -46,6 +46,11 @@ public class SettlementKey {
     @JsonProperty("TransmissionDateTime")
     public void setTransmissionDateTime(String transmissionDateTime) {
         this.transmissionDateTime = transmissionDateTime;
+    }
+
+    @Override
+    public String toString() {
+        return ToStringUtil.toPrettyString(this);
     }
 
 }

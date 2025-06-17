@@ -1,10 +1,5 @@
 server:
   port: 9101
-spring:
-  jpa:
-    hibernate:
-      ddl-auto: update
-# Springdoc 설정 (Swagger 관련 설정)
 springdoc:
   swagger-ui:
     groups-order: DESC               # 그룹 순서: 내림차순

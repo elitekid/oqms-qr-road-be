@@ -4,6 +4,7 @@ import com.qrroad.oqms.infrastructure.config.VaultConfig;
 import com.qrroad.oqms.infrastructure.service.VaultService;
 import com.qrroad.oqms.domain.config.DomainConfig;
 import com.qrroad.oqms.infrastructure.config.DBConfig;
+
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.context.annotation.Bean;
