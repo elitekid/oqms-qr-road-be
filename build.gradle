@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'com.qrroad.oqms'
-version = '0.0.3 v-SNAPSHOT'
+version = '0.0.4-SNAPSHOT'
 
 repositories {
     maven {
