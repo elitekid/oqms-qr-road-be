@@ -8,7 +8,15 @@ group = 'com.qrroad.oqms'
 version = '0.0.3 v-SNAPSHOT'
 
 repositories {
-    mavenCentral()
+    maven {
+        url 'http://192.168.20.249:8081/repository/maven-public/'
+        allowInsecureProtocol true
+        credentials {
+            username = 'maven_user'
+            password = 'zbqod2024A$z1'
+        }
+
+    }
 }
 
 
@@ -40,7 +48,15 @@ subprojects {
     }
 
     repositories {
-        mavenCentral()
+        maven {
+            url 'http://192.168.20.249:8081/repository/maven-public/'
+            allowInsecureProtocol true
+            credentials {
+                username = 'maven_user'
+                password = 'zbqod2024A$z1'
+            }
+
+        }
     }
 
     dependencies { // 모든 하위 모듈에 추가 될 의존성 목록입니다.
