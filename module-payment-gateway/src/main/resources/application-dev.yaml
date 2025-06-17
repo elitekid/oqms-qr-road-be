@@ -1,0 +1,9 @@
+spring:
+  cloud:
+    vault:
+      ssl:
+        enabled: false
+      authentication: token
+      host: "vault.dev.local"
+      port: 443
+      token: "hvs.jazUDRv6c8aEVbbWL1TkBPHg"
