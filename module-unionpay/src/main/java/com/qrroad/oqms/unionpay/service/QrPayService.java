@@ -1,7 +1,5 @@
 package com.qrroad.oqms.unionpay.service;
 
-import com.qrroad.oqms.domain.repository.OqUpiTokenRepository;
-import com.qrroad.oqms.unionpay.dto.*;
 import com.qrroad.oqms.unionpay.util.CommonUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -9,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.Map;
-import java.util.Optional;
 
 @Service
 @Slf4j

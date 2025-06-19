@@ -26,7 +26,6 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class MPMBackService {
 
-    private final QrPayService qrPayService;
     private final OqUpiTokenRepository oqUpiTokenRepository;
     private final UmpsCertificateKeyManager umpsCertificateKeyManager;
 

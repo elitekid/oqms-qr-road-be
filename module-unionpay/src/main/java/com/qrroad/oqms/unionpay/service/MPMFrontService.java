@@ -1,13 +1,11 @@
 package com.qrroad.oqms.unionpay.service;
 
 import com.qrroad.oqms.domain.dto.OqUpiUserAuthDto;
-import com.qrroad.oqms.domain.repository.OqAdminUsersRepository;
 import com.qrroad.oqms.domain.repository.OqUpiUserAuthRepository;
 import com.qrroad.oqms.unionpay.config.HttpGetWithEntity;
 import com.qrroad.oqms.unionpay.dto.*;
 import com.qrroad.oqms.unionpay.dto.upitrxinfo.GetUserIdTrxInfo;
 import com.qrroad.oqms.unionpay.dto.upitrxinfo.OrderVerifyTrxInfo;
-import com.qrroad.oqms.unionpay.enums.ApiResponseCode;
 import com.qrroad.oqms.unionpay.enums.ApiSource;
 import com.qrroad.oqms.unionpay.enums.MessageId;
 import com.qrroad.oqms.unionpay.enums.MessageType;
@@ -15,7 +13,6 @@ import com.qrroad.oqms.unionpay.keymanagement.UmpsCertificateKeyManager;
 import com.qrroad.oqms.unionpay.util.CommonUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -52,8 +49,6 @@ public class MPMFrontService {
 
     private final UmpsCertificateKeyManager umpsCertificateKeyManager;
     private final OqUpiUserAuthRepository userAuthRepository;
-    private final TokenService tokenService;
-    private final QrPayService qrPayService;
     private final MPMService mpmService;
 
     private static final String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -428,6 +423,7 @@ public class MPMFrontService {
 //                throw new CustomException("01", "Element with id 'callPay' not found");
             }
 
+            @SuppressWarnings("null")
             String hrefValue = element.attr("href");
             if (hrefValue == null || hrefValue.isEmpty()) {
 //                throw new CustomException("01", "href value is null or empty");

@@ -24,7 +24,6 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class CPMService {
     private final UmpsCertificateKeyManager umpsCertificateKeyManager;
-    private final QrPayService qrPayService;
     private final OqUpiTokenRepository oqUpiTokenRepository;
 
     /**

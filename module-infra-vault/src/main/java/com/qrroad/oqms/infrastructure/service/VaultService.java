@@ -22,6 +22,7 @@ public class VaultService {
         this.symmetricKeyManager = symmetricKeyManager;
     }
 
+    @SuppressWarnings("unchecked")
     public Map<String, Object> getSecretData(String path) {
         return Optional.ofNullable(vaultOperations.read(path))
                 .map(response -> Objects.requireNonNull(response.getData()).get("data"))
@@ -61,6 +62,7 @@ public class VaultService {
     }
 
     // 1. KV 경로에 값 암호화 후 저장
+    @SuppressWarnings("unchecked")
     public void addEncryptedValue(String path, String key, String value, boolean preserveExisting) {
         try {
             // 값 암호화
@@ -103,6 +105,7 @@ public class VaultService {
             Map<String, Object> data = Objects.requireNonNull(vaultOperations.read(path)).getData();
 
             // "data" 키에서 실제 값을 가져오기
+            @SuppressWarnings({ "unchecked", "null" })
             Map<String, Object> actualData = (Map<String, Object>) data.get("data");
 
             if (actualData == null || !actualData.containsKey(key)) {
@@ -125,6 +128,7 @@ public class VaultService {
         try {
 
             Map<String, Object> data = Objects.requireNonNull(vaultOperations.read(path)).getData();
+            @SuppressWarnings({ "unchecked", "null" })
             Map<String, Object> actualData = (Map<String, Object>) data.get("data");
 
             if (actualData == null || !actualData.containsKey(key)) {
@@ -168,6 +172,7 @@ public class VaultService {
     /**
      * Vault에서 KV2 방식의 데이터 읽기
      */
+    @SuppressWarnings("unchecked")
     private Map<String, Object> getKvData(String path) {
         Map<String, Object> readData = Objects.requireNonNull(vaultOperations.read(path)).getData();
         if (readData == null || !readData.containsKey("data")) {

@@ -10,9 +10,6 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.sql.Timestamp;
-import java.util.Optional;
-
 @RequiredArgsConstructor
 @Component
 public class OqUpiTokenRepositoryImpl implements OqUpiTokenRepository {

@@ -28,8 +28,6 @@ public class MPMService {
 
     private final UmpsCertificateKeyManager umpsCertificateKeyManager;
     private final OqUpiTokenRepository oqUpiTokenRepository;
-    private final QrPayService qrPayService;
-    private final TokenService tokenService;
 
     /**
      * 거래결과를 조회하여 은행 응답 DTO를 생성합니다.

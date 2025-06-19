@@ -3,7 +3,6 @@ package com.qrroad.oqms.domain.dto;
 import lombok.Builder;
 import lombok.Getter;
 
-import java.sql.Time;
 import java.sql.Timestamp;
 
 @Getter
