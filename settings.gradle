@@ -1,16 +1,3 @@
-pluginManagement {
-    repositories {
-        maven {
-            url = 'http://192.168.20.249:8081/repository/maven-public/'
-            allowInsecureProtocol = true
-            credentials {
-            username = 'maven_user'
-            password = 'zbqod2024A$z1'
-            }
-        }
-    }
-}
-
 rootProject.name = 'oqms-qr-road-be'
 include 'module-unionpay'
 include 'module-infra-rdb'
