@@ -11,6 +11,7 @@
             <option value="$PROJECT_DIR$/module-core" />
             <option value="$PROJECT_DIR$/module-domain" />
             <option value="$PROJECT_DIR$/module-infra-rdb" />
+            <option value="$PROJECT_DIR$/module-infra-tcp" />
             <option value="$PROJECT_DIR$/module-infra-vault" />
             <option value="$PROJECT_DIR$/module-payment-gateway" />
             <option value="$PROJECT_DIR$/module-unionpay" />
