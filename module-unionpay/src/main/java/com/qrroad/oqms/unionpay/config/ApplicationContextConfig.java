@@ -4,6 +4,7 @@ import com.qrroad.oqms.infrastructure.config.VaultConfig;
 import com.qrroad.oqms.infrastructure.service.VaultService;
 import com.qrroad.oqms.domain.config.DomainConfig;
 import com.qrroad.oqms.infrastructure.config.DBConfig;
+import com.qrroad.oqms.infrastructure.config.TcpConfig;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -19,7 +20,7 @@ import java.util.Map;
  * 이 클래스는 애플리케이션에서 필요한 도메인 및 인프라 관련 설정을 통합하여
  * 사용하는 역할을 합니다.
  * <p>
- * - `DomainConfig`, `DBConfig`, 'VaultConfig' 를 임포트하여 애플리케이션 내에서
+ * - `DomainConfig`, `DBConfig`, 'VaultConfig', 'TcpConfig' 를 임포트하여 애플리케이션 내에서
  *   해당 빈들을 사용할 수 있도록 합니다.
  * <p>
  * 애플리케이션에 필요한 도메인, 인프라 빈을 모두 포함하는 설정 파일입니다.
@@ -29,7 +30,7 @@ import java.util.Map;
  * (local에서는 Spring Boot의 자동설정으로 DataSource가 생성됩니다)
  */
 @Configuration
-@Import({DomainConfig.class, DBConfig.class, VaultConfig.class})
+@Import({DomainConfig.class, DBConfig.class, VaultConfig.class, TcpConfig.class})
 @Slf4j
 public class ApplicationContextConfig {
     private final VaultService vaultService;

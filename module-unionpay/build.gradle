@@ -19,6 +19,7 @@ dependencies {
     implementation project(':module-infra-vault')
     implementation project(':module-infra-rdb')
     implementation project(':module-payment-gateway')
+    implementation project(':module-infra-tcp')
 
     testImplementation platform('org.junit:junit-bom:5.10.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'

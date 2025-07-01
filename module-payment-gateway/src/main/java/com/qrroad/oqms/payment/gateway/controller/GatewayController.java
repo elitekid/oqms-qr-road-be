@@ -96,6 +96,8 @@ public class GatewayController {
             return "http://localhost:9101"; // UnionPay 서비스
         } else if(instCd.equalsIgnoreCase("081")) {
 
+        } else {
+            return "http://localhost:9101";
         }
         throw new IllegalArgumentException("Invalid instCd or unsupported requestUri: " + instCd);
     }
