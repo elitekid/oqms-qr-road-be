@@ -1,11 +1,9 @@
 package com.qrroad.oqms.infrastructure.config;
 
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@EnableConfigurationProperties(TcpProperties.class)
 @ComponentScan(basePackages = "com.qrroad.oqms.infrastructure.tcp")
 public class TcpConfig {
     
