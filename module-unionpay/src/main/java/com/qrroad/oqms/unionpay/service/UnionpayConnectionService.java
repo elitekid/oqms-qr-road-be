@@ -34,19 +34,19 @@ import java.util.concurrent.locks.ReentrantLock;
 @RequiredArgsConstructor
 public class UnionpayConnectionService {
 
-    @Value("${unionpay.host:localhost}")
+    @Value("${oqms.tcp.defaultHost:localhost}")
     private String unionPayHost;
     
-    @Value("${unionpay.port:8080}")
+    @Value("${oqms.tcp.defaultPort:8583}")
     private int unionPayPort;
     
-    @Value("${unionpay.timeout:30000}")
+    @Value("${oqms.tcp.writeTimeoutMs:30000}")
     private int timeoutMs;
     
-    @Value("${unionpay.reconnect.enabled:true}")
+    @Value("${oqms.tcp.reconnect.enabled:true}")
     private boolean reconnectEnabled;
     
-    @Value("${unionpay.reconnect.interval:5000}")
+    @Value("${oqms.tcp.reconnect.interval:5000}")
     private int reconnectIntervalMs;
 
     private Socket socket;

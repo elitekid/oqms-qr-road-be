@@ -32,12 +32,6 @@ public class UnionpayEchoScheduler {
     // STAN(System Trace Audit Number) 생성을 위한 카운터
     private final AtomicLong stanCounter = new AtomicLong(1);
     
-    // Echo 메시지 실패 카운터
-    private final AtomicLong failureCount = new AtomicLong(0);
-    
-    // 최대 재시도 횟수
-    private static final long MAX_FAILURE_COUNT = 3;
-    
     // 네트워크 관리 정보 코드 - Echo Test
     private static final String ECHO_TEST_CODE = "001";
 
@@ -45,7 +39,7 @@ public class UnionpayEchoScheduler {
      * 5분마다 Echo 메시지 전송
      * cron: 0초 0분 5분마다 실행
      */
-    @Scheduled(cron = "0 */5 * * * *")
+    @Scheduled(cron = "0 */1 * * * *")
     public void sendEchoMessage() {
         try {
             log.debug("Starting echo message transmission");
@@ -65,7 +59,6 @@ public class UnionpayEchoScheduler {
             // 응답 검증
             if (validateEchoResponse(echoResponse)) {
                 log.info("Echo message sent successfully. STAN: {}", echoRequest.stan());
-                resetFailureCount();
             } else {
                 handleEchoFailure("Invalid echo response received");
             }
@@ -151,25 +144,10 @@ public class UnionpayEchoScheduler {
      * Echo 실패 처리
      */
     private void handleEchoFailure(String errorMessage) {
-        long currentFailures = failureCount.incrementAndGet();
-        log.error("Echo message failure #{}: {}", currentFailures, errorMessage);
+        log.error("Echo message failure: {}", errorMessage);
         
-        if (currentFailures >= MAX_FAILURE_COUNT) {
-            log.error("Echo failures exceeded maximum count ({}). Requesting connection reset.", 
-                     MAX_FAILURE_COUNT);
-            connectionService.requestConnectionReset();
-            resetFailureCount();
-        }
-    }
-
-    /**
-     * 실패 카운터 리셋
-     */
-    private void resetFailureCount() {
-        if (failureCount.get() > 0) {
-            failureCount.set(0);
-            log.info("Echo failure count reset to 0");
-        }
+        log.error("Connection is not active. Attempting to reconnect...");
+        connectionService.requestConnectionReset();
     }
 
     /**
@@ -179,8 +157,6 @@ public class UnionpayEchoScheduler {
         return EchoSchedulerStatus.builder()
                 .isEnabled(true)
                 .currentStan(stanCounter.get())
-                .failureCount(failureCount.get())
-                .maxFailureCount(MAX_FAILURE_COUNT)
                 .lastEchoTime(LocalDateTime.now())
                 .build();
     }
@@ -193,8 +169,6 @@ public class UnionpayEchoScheduler {
     public static class EchoSchedulerStatus {
         private final boolean isEnabled;
         private final long currentStan;
-        private final long failureCount;
-        private final long maxFailureCount;
         private final LocalDateTime lastEchoTime;
     }
 }
